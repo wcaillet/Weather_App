@@ -1,5 +1,5 @@
 /*--------------------------------------------*/
-/*                 General Styles                 */
+/*                 General Styles             */
 /*--------------------------------------------*/
 
 *{
@@ -52,10 +52,12 @@ img{
 /*--------------------------------------------*/
 
 #title{
-	font-size: 2em;
+	font-size: 3vw;
+  font-family: "Apple Chancery";
+  color: navy;
 	text-align: center;	
-	background-color: lightcoral;
-	opacity: 0.8;
+	background: rgba(240, 128, 128, 0.3);
+	/*opacity: 0.8;*/
 	padding: 15px;
 
 }
@@ -64,9 +66,11 @@ img{
 	border: 2px solid purple ;
 	display: block;
 	border-radius: 65%;
-	max-width: 60%;
+	max-width: 50%;
 	margin: auto;
 	text-align: center;
-	font-size: 1.5em;
+	font-size: 2vw;
+  background: rgba(240, 128, 128, 0.3);
+  font-family: Optima;
 }
 

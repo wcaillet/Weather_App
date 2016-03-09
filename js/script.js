@@ -10,7 +10,7 @@ console.log($)
 // https://api.forecast.io/forecast/APIKEY/LATITUDE,LONGITUDE
 
 var apiKey = "95fddab35544148bbb14d85e5cf9278a"
-var baseUrl = "https://api.forecast.io/forecast"
+var baseUrl = "https://api.forecast.io/forecast/"
 var latLong = "/29.7605,-95.3698"
 var callbackHack = "?callback=?"
 var fullUrl = baseUrl + apiKey + latLong + callbackHack
@@ -25,16 +25,12 @@ var weatherData = null
 ////-----------------------------------
 
 
-
-
-
-
 var successCallback = function(positionObject) {
 	//console.log(positionObject)
 	var lat = positionObject.coords.latitude,
 		long = positionObject.coords.longitude
 
-	var fullUrl = baseUrl + "/" + apiKey +'/' + lat + "," + long + callbackHack
+	var fullUrl = baseUrl  + apiKey +'/' + lat + "," + long + callbackHack
 	
 	$.getJSON(fullUrl).then( //promise
 		function(resp){
@@ -62,36 +58,37 @@ var ViewConstructor = function(dom_node_el, templateBuilder_fn){
 	}
 }
 
-// var navBar = function(navArray){
-// 	var htmlStr = ''
-// 	for(var i=0; i<navArray.length; i++){
-// 		 htmlStr += '<button class="' + navArray[i].toLowerCase() + '">' + navArray[i] + '</button>'
-// 	}
-// 		return htmlStr
-// }
+var navBar = function(navArray){
+	var htmlStr = ''
+	for(var i=0; i<navArray.length; i++){
+		 htmlStr += '<button class="' + navArray[i].toLowerCase() + '">' + navArray[i] + '</button>'
+	}
+		return htmlStr
+}
 
-//var navViewInstance = new ViewConstructor("#nav-container", navBar)
+var navViewInstance = new ViewConstructor("#nav-container", navBar)
 
 
 //// ----------- Current View -- Started here
 
 var handleCurrentJsonData = function(jsonData) {
-	console.log('handling currently data....')
-
-	// console.log(jsonData)
-	// var htmlString = ""
-	// var currentlyObj = jsonData.currently
-	// 	for (var prop in currentlyObj) {
-	// 	var value = currentlyObj[prop]
-	// 	console.log(value)	
-	// }
-
 	var currentWeather = jsonData.currently  // parse 
+
 	var htmlString = currentObjToHTML(currentWeather) // build template
-	console.log(htmlString)
+    tempContainer.innerHTML = htmlString // put template on DOM
+
+
+    //logging...
+    console.log('handling currently data....')
+
+    for (var prop in currentWeather) {
+		var value = currentWeather[prop]
+		console.log(value)	
+	}
+
+    console.log(htmlString)
 	console.log(tempContainer)
 
-	tempContainer.innerHTML = htmlString // put template on DOM
 
 }
 
@@ -99,7 +96,7 @@ var currentObjToHTML = function(currentObj) {
 
 	var tempString = ""
 		tempString += '<div id="weatherContainer">' 
-		tempString += 	'<p class="temperature">'+ currentObj.temperature + '</p>' 
+		tempString += 	'<p class="temperature">'+ currentObj.temperature.toPrecision(2) + '&deg;</p>' 
 		tempString +=	'<p class="summary">' + currentObj.summary + '</p>'
 		tempString += '</div>'
 	
@@ -109,9 +106,10 @@ var currentObjToHTML = function(currentObj) {
 //// ----------- Hourly View 
 
 var handleHourlyJsonData = function(jsonData) {
-	console.log('handling hourly data....')
+    console.log('handling hourly data....')
    var htmlString = "" 
    var hourlyDataArray = jsonData.hourly.data
+   
    for (var i = 0; i < 24; i++) {
        var hourlyObj = hourlyDataArray[i]
        htmlString += hourlyObjToHTML(hourlyObj)
@@ -126,7 +124,7 @@ var hourlyObjToHTML = function(jsonObj) {
 		tempString += 	'<p class="temperature"> ' 
 		tempString +=    jsonObj.time + '</p>' 
 		tempString += 	'<p class="temperature"> ' 
-		tempString +=    jsonObj.temperature + '</p>'
+		tempString +=    jsonObj.temperature.toPrecision(2) + '&deg;</p>'
 		tempString +=	'<p class="summary">' + jsonObj.summary + '</p>'
 		tempString += '</div>'
 		return tempString
@@ -151,10 +149,10 @@ var dailyObjToHTML = function(jsonObj) {
 	var tempString = ""
 		tempString += '<div id="weatherContainer">' 
 		tempString += 	'<p class="temperature">Max Temp: ' 
-		tempString +=    jsonObj.temperatureMax + '</p>' 
+		tempString +=    jsonObj.temperatureMax.toPrecision(2) + '&deg;</p>' 
 		tempString += 	'<p class="temperature">Min Temp: ' 
-		tempString +=    jsonObj.temperatureMin + '</p>' 
-		tempString +=   '<i class="icon"' + jsonObj.icon + '>'
+		tempString +=    jsonObj.temperatureMin.toPrecision(2) + '&deg;</p>' 
+		// tempString +=   '<i class="icon"' + jsonObj.icon + '>'
 		tempString +=	'<p class="summary">' + jsonObj.summary + '</p>'
 		tempString += '</div>'
 		return tempString
@@ -166,7 +164,8 @@ var handleNavClick = function(event){
 	// console.log("hiya buddy")
 	// console.log(event.target)
 	// console.log(event.target.className)
-	window.location.hash = event.target.className
+
+	window.location.hash = event.target.className  //daily  , hourly , currently
 }
 
 // var navOps = ['Current', 'Hourly', 'Daily']
@@ -175,7 +174,7 @@ var handleNavClick = function(event){
 
 ////-------------------------------------
 
-//var navViewInstance = new ViewConstructor("#nav-container", navBar)
+// var navViewInstance = new ViewConstructor("#nav-container", navBar)
 
 var view_Current = new ViewConstructor("#tempContainer", currentObjToHTML)
 
@@ -200,7 +199,7 @@ var view_Daily = new ViewConstructor("#tempContainer", dailyObjToHTML)
 
 
 var routerController = function(){
-	console.log(window.location.hash)
+	//console.log(window.location.hash)
 
 	// if( weatherData === null) { //
 	//   window.location.hash = "currently"
@@ -208,31 +207,29 @@ var routerController = function(){
     //  } else {....
 	// 
 
-	console.log(weatherData)
+	//console.log(weatherData)
+	var forecastIOPromise = function(theUrl){
+			return $.getJSON(theUrl)
+	}
 
-	if	(window.location.hash === "hourly"){
-		// view_Hourly.renderHTML(getWeather)
-		// var forecastPromiseHourly = $.getJSON(fullUrl)
+	if	(window.location.hash === "#hourly"){ //Need to include the hash here!
 
-		handleHourlyJsonData(weatherData)
+		 var alternativeFcPromise = $.getJSON(fullUrl)
+		 alternativeFcPromise.then(handleHourlyJsonData)
 
 	}
-	else if(window.location.hash === "daily"){
-		// view_Daily.renderHTML(getWeather)
-		// var forecastPromiseDaily = $.getJSON(fullUrl)
-		handleDailyJsonData(weatherData)
+	else if(window.location.hash === "#daily"){ //Need to include the hash here!
+		// view_Daily.renderHTML(handleDailyJsonData)
+		forecastIOPromise(fullUrl).then(handleDailyJsonData)
+
 	}
 	else {
-		// view_Current.renderHTML(getWeather)
-		// var forecastPromiseCurrent = $.getJSON(fullUrl)
-		console.log(weatherData)
-		handleCurrentJsonData(weatherData)
+		forecastIOPromise(fullUrl).then(handleCurrentJsonData)
+		//console.log(weatherData)
 	}
 }
 
 // routerController()  
-
-
 
 navigator.geolocation.getCurrentPosition(successCallback,errorCallback)
 
