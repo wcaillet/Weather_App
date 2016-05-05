@@ -1,4 +1,4 @@
-console.log("hello my fair-weathered friend")
+console.log("hello my friend")
 console.log($)
 
 // https://api.forecast.io/forecast/APIKEY/LATITUDE,LONGITUDE
@@ -93,10 +93,11 @@ var handleCurrentJsonData = function(jsonData) {
 }
 
 var currentObjToHTML = function(currentObj) {
+	// var dateInt_ms = nowDate.getTime()
 
 	var tempString = ""
 		tempString += '<div id="weatherContainer">' 
-		tempString += 	'<p class="temperature">'+ currentObj.temperature.toPrecision(2) + '&deg;</p>' 
+		tempString += 	'<p class="temperature">'+ currentObj.temperature.toPrecision(2) + '&deg;F</p>' 
 		tempString +=	'<p class="summary">' + currentObj.summary + '</p>'
 		tempString += '</div>'
 	
@@ -121,10 +122,10 @@ var hourlyObjToHTML = function(jsonObj) {
 //	console.log(jsonObj)
 	var tempString = ""
 		tempString += '<div id="weatherContainer">' 
+		// tempString += 	'<p class="time"> ' 
+		// tempString +=    jsonObj.time + '</p>' 
 		tempString += 	'<p class="temperature"> ' 
-		tempString +=    jsonObj.time + '</p>' 
-		tempString += 	'<p class="temperature"> ' 
-		tempString +=    jsonObj.temperature.toPrecision(2) + '&deg;</p>'
+		tempString +=    jsonObj.temperature.toPrecision(2) + '&deg;F</p>'
 		tempString +=	'<p class="summary">' + jsonObj.summary + '</p>'
 		tempString += '</div>'
 		return tempString
@@ -148,10 +149,12 @@ var dailyObjToHTML = function(jsonObj) {
 //	console.log(jsonObj)
 	var tempString = ""
 		tempString += '<div id="weatherContainer">' 
+		// tempString += 	'<p class="temperature"> ' 
+		// tempString +=    jsonObj.time + '</p>' 
 		tempString += 	'<p class="temperature">Max Temp: ' 
-		tempString +=    jsonObj.temperatureMax.toPrecision(2) + '&deg;</p>' 
+		tempString +=    jsonObj.temperatureMax.toPrecision(2) + '&deg;F</p>' 
 		tempString += 	'<p class="temperature">Min Temp: ' 
-		tempString +=    jsonObj.temperatureMin.toPrecision(2) + '&deg;</p>' 
+		tempString +=    jsonObj.temperatureMin.toPrecision(2) + '&deg;F</p>' 
 		// tempString +=   '<i class="icon"' + jsonObj.icon + '>'
 		tempString +=	'<p class="summary">' + jsonObj.summary + '</p>'
 		tempString += '</div>'
@@ -159,6 +162,7 @@ var dailyObjToHTML = function(jsonObj) {
 }
 
 // -----------------  Routing ------------------ //
+
 
 var handleNavClick = function(event){
 	// console.log("hiya buddy")

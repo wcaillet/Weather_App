@@ -16,24 +16,43 @@
 
 		<div id=title>
 			<p>Weatherly</p>
-			<p>Let's check the weather!</p>
-			<input type="text" class="searchBox" placeholder="Enter A Location"></input>
+			<p>Let's check the weather in Houston!</p>
+			<!-- <input type="text" class="searchBox" placeholder="Enter A Location"></input> -->
 		</div>
 
 		<div id="nav-container">
-			<button class="current">Current</button>
-			<button class="hourly">Hourly</button>
-			<button class="daily">Daily</button>
+			<button value ="current" class="current">Current</button>
+			<button value ="hourly" class="hourly">Hourly</button>
+			<button value ="daily" class="daily">Daily</button>
 
 		</div>
 
 		<div id="tempContainer"></div>
 
 
+<!-- 		<div id="imageContainer">
+			<img id="backgroundImage" src="images/cloudsbkground.jpg">
+			<div id="imageOverlay"></div>
+		</div>
+		
+
+		<div class="buttonsContainer">
+			<input class="searchCity" placeholder="Search for City Weather"type="text">
+			<button value="currentForecast">Current Forecast</button>
+			<button value="hourlyForecast">Hourly Forecast</button>
+			<button value="dailyForecast">Daily Forecast</button>
+		</div>
+		<div class="currentCity"></div>
+		<div class="allWeather">
+			<div class="currentCityContainer"></div>
+			<div class="weatherContainer"></div>s
+		</div> -->
+	
 
 
-
-
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.1/backbone-min.js"></script>
+		<script src="js/skycons.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 		<script type="text/javascript" src="js/script.js"></script>
 	</body>
